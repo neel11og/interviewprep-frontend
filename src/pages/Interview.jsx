@@ -22,7 +22,7 @@ const Interview = () => {
       "Explain the concept of a binary search tree.",
       "What is a hash table and how does it work?",
     ],
-    Algorithms: [
+    "Algorithms": [
       "What is the time complexity of quicksort?",
       "Explain the difference between BFS and DFS.",
       "What is dynamic programming? Give an example.",
