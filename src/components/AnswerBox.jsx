@@ -19,17 +19,23 @@ const AnswerBox = () => {
     }
   };
 
+  const bgColor = useColorModeValue("white", "gray.700");
+  const textColor = useColorModeValue("gray.800", "gray.100");
+  const placeholderColor = useColorModeValue("gray.500", "gray.400");
+  const borderColor = useColorModeValue("gray.300", "gray.600");
+
   return (
     <Box
-      bg={useColorModeValue("white", "gray.700")}
+      bg={bgColor}
       p={6}
       rounded="md"
       shadow="md"
       border="1px solid"
-      borderColor={useColorModeValue("gray.300", "gray.600")}
+      borderColor={borderColor}
+      w="full"
     >
       <VStack align="start" spacing={4}>
-        <Text fontSize="md" fontWeight="semibold" color={useColorModeValue("gray.700", "gray.200")}>
+        <Text fontSize="md" fontWeight="semibold" color={textColor}>
           ✍️ Your Answer
         </Text>
 
@@ -40,10 +46,11 @@ const AnswerBox = () => {
           size="md"
           resize="vertical"
           minHeight="120px"
-          borderColor={useColorModeValue("gray.300", "gray.600")}
+          borderColor={borderColor}
           focusBorderColor="purple.500"
           bg={useColorModeValue("white", "gray.800")}
-          color={useColorModeValue("gray.800", "gray.100")}
+          color={textColor}
+          _placeholder={{ color: placeholderColor }}
         />
 
         <Button
