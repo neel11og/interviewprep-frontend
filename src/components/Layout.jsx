@@ -17,6 +17,9 @@ import {
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { Link as RouterLink, Outlet } from "react-router-dom";
+import logo from "../assets/logo.png";
+
+<Image src={logo} alt="InterviewPrep.AI Logo" boxSize="40px" />
 
 const Layout = () => {
   const { colorMode, toggleColorMode } = useColorMode();
