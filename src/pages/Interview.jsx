@@ -5,87 +5,100 @@ import {
   VStack,
   Select,
   Text,
-  Stack,
-  useBreakpointValue,
+  Spinner,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import QuestionCard from "../components/QuestionCard";
+import { useEffect, useState } from "react";
 import AnswerBox from "../components/AnswerBox";
-import { useState, useEffect } from "react";
 
 const Interview = () => {
-  const [category, setCategory] = useState("General");
+  const [category, setCategory] = useState("Data Structures");
   const [question, setQuestion] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const categories = ["General", "Technical", "HR", "Behavioral"];
+  const questions = {
+    "Data Structures": [
+      "What is the difference between an array and a linked list?",
+      "Explain the concept of a binary search tree.",
+      "What is a hash table and how does it work?",
+    ],
+    Algorithms: [
+      "What is the time complexity of quicksort?",
+      "Explain the difference between BFS and DFS.",
+      "What is dynamic programming? Give an example.",
+    ],
+    "System Design": [
+      "How would you design a URL shortening service?",
+      "Explain the concept of load balancing.",
+      "What is a CDN and how does it work?",
+    ],
+    "OOP Concepts": [
+      "What is polymorphism in object-oriented programming?",
+      "Explain the SOLID principles.",
+      "What is the difference between abstraction and encapsulation?",
+    ],
+  };
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+  };
 
   const getRandomQuestion = () => {
-    const sampleQuestions = {
-      General: [
-        "Tell me about yourself.",
-        "Why do you want this job?",
-        "What are your strengths and weaknesses?",
-      ],
-      Technical: [
-        "What is the difference between REST and GraphQL?",
-        "Explain how a binary search works.",
-        "What are the main principles of OOP?",
-      ],
-      HR: [
-        "Where do you see yourself in 5 years?",
-        "Why did you leave your last job?",
-        "Describe a time you faced conflict at work.",
-      ],
-      Behavioral: [
-        "Tell me about a time you took initiative.",
-        "Describe a difficult decision you had to make.",
-        "Tell me about a mistake you made and what you learned.",
-      ],
-    };
-
-    const questions = sampleQuestions[category];
-    const random = questions[Math.floor(Math.random() * questions.length)];
-    setQuestion(random);
+    const categoryQuestions = questions[category];
+    const randomIndex = Math.floor(Math.random() * categoryQuestions.length);
+    return categoryQuestions[randomIndex];
   };
 
   useEffect(() => {
-    getRandomQuestion();
+    setLoading(true);
+    setTimeout(() => {
+      const q = getRandomQuestion();
+      setQuestion(q);
+      setLoading(false);
+    }, 500);
   }, [category]);
 
   return (
     <Box
-      maxW="100%"
-      px={{ base: 4, sm: 6, md: 10 }}
-      py={{ base: 4, md: 8 }}
-      minH="100vh"
-      bg="gray.50"
+      p={{ base: 4, md: 8 }}
+      bg={useColorModeValue("gray.100", "gray.800")}
+      minH="80vh"
     >
-      <VStack spacing={6} align="stretch" w="full">
-        <Heading
-          as="h1"
-          textAlign="center"
-          fontSize={{ base: "xl", sm: "2xl", md: "3xl" }}
-        >
-          Interview Practice
+      <VStack spacing={6} align="stretch" maxW="3xl" mx="auto">
+        <Heading size="lg" color={useColorModeValue("gray.700", "gray.100")}>
+          🎯 Interview Practice
         </Heading>
 
-        <Box>
-          <Text mb={2} fontSize={{ base: "md", md: "lg" }}>
-            Select a category:
-          </Text>
-          <Select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            bg="white"
-            w="full"
-            maxW={{ base: "100%", md: "300px" }}
-          >
-            {categories.map((cat) => (
-              <option key={cat}>{cat}</option>
-            ))}
-          </Select>
-        </Box>
+        <Select
+          value={category}
+          onChange={handleCategoryChange}
+          bg={useColorModeValue("white", "gray.700")}
+          borderColor={useColorModeValue("gray.300", "gray.600")}
+        >
+          {Object.keys(questions).map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </Select>
 
-        <QuestionCard question={question} />
+        {loading ? (
+          <Spinner size="lg" alignSelf="center" />
+        ) : (
+          <Box
+            p={6}
+            rounded="md"
+            bg={useColorModeValue("white", "gray.700")}
+            shadow="md"
+            border="1px solid"
+            borderColor={useColorModeValue("gray.300", "gray.600")}
+          >
+            <Text fontSize="lg" fontWeight="medium">
+              🧠 {question}
+            </Text>
+          </Box>
+        )}
+
         <AnswerBox />
       </VStack>
     </Box>
