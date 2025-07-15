@@ -22,11 +22,10 @@ const Layout = () => {
     <>
       <Box bg={bg} px={4} py={2} shadow="md" position="sticky" top={0} zIndex={999}>
         <Flex alignItems="center">
-          {/* Logo */}
+          {/* Logo and Title */}
           <RouterLink to="/">
             <HStack spacing={3}>
-              <Image src="/logo.png" alt="Logo" boxSize="40px" />
-              <Image src={logo} alt="Logo" boxSize="40px" />
+              <Image src="/logo.png" alt="logo" boxSize="40px" />
               <Box fontWeight="bold">InterviewPrep.AI</Box>
             </HStack>
           </RouterLink>
