@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Outlet, Link as RouterLink } from "react-router-dom";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
-import logo from "../assets/logo.png"; // Make sure this file exists!
+
 
 const Layout = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -25,6 +25,7 @@ const Layout = () => {
           {/* Logo */}
           <RouterLink to="/">
             <HStack spacing={3}>
+              <Image src="/logo.png" alt="Logo" boxSize="40px" />
               <Image src={logo} alt="Logo" boxSize="40px" />
               <Box fontWeight="bold">InterviewPrep.AI</Box>
             </HStack>
