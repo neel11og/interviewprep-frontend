@@ -1,5 +1,13 @@
 // src/pages/Interview.jsx
-import { Box, Heading, VStack, Select, Text, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  VStack,
+  Select,
+  Text,
+  Stack,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import QuestionCard from "../components/QuestionCard";
 import AnswerBox from "../components/AnswerBox";
 import { useState, useEffect } from "react";
@@ -44,24 +52,31 @@ const Interview = () => {
   }, [category]);
 
   return (
-    <Box maxW="container.md" mx="auto" px={{ base: 4, md: 8 }} py={6}>
-      <VStack spacing={6} align="stretch">
+    <Box
+      maxW="100%"
+      px={{ base: 4, sm: 6, md: 10 }}
+      py={{ base: 4, md: 8 }}
+      minH="100vh"
+      bg="gray.50"
+    >
+      <VStack spacing={6} align="stretch" w="full">
         <Heading
           as="h1"
-          size="lg"
           textAlign="center"
-          fontSize={{ base: "2xl", md: "3xl" }}
+          fontSize={{ base: "xl", sm: "2xl", md: "3xl" }}
         >
-          Practice Interview Questions
+          Interview Practice
         </Heading>
 
         <Box>
-          <Text fontWeight="medium" mb={2}>
-            Select Category:
+          <Text mb={2} fontSize={{ base: "md", md: "lg" }}>
+            Select a category:
           </Text>
           <Select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
+            bg="white"
+            w="full"
             maxW={{ base: "100%", md: "300px" }}
           >
             {categories.map((cat) => (
@@ -71,7 +86,6 @@ const Interview = () => {
         </Box>
 
         <QuestionCard question={question} />
-
         <AnswerBox />
       </VStack>
     </Box>
