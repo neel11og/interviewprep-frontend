@@ -1,62 +1,89 @@
-// src/components/Layout.jsx
 import {
   Box,
   Flex,
-  HStack,
+  Heading,
   IconButton,
-  Image,
+  Spacer,
   useColorMode,
   useColorModeValue,
-  Spacer,
+  Image,
   Link,
 } from "@chakra-ui/react";
 import { Outlet, Link as RouterLink } from "react-router-dom";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
+import { motion } from "framer-motion";
 
+const MotionBox = motion(Box);
 
 const Layout = () => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const bg = useColorModeValue("gray.100", "gray.800");
+  const bg = useColorModeValue("gray.100", "gray.900");
 
   return (
     <>
-      <Box bg={bg} px={4} py={2} shadow="md" position="sticky" top={0} zIndex={999}>
-        <Flex alignItems="center">
-          {/* Logo and Title */}
-          <RouterLink to="/">
-            <HStack spacing={3}>
-              <Image src="/logo.png" alt="logo" boxSize="40px" />
-              <Box fontWeight="bold">InterviewPrep.AI</Box>
-            </HStack>
-          </RouterLink>
+      <MotionBox
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        bg={bg}
+        minH="100vh"
+      >
+        <Flex
+          as="nav"
+          align="center"
+          justify="space-between"
+          wrap="wrap"
+          padding="1.5rem"
+          bg={useColorModeValue("white", "gray.800")}
+          color={useColorModeValue("gray.800", "white")}
+          boxShadow="md"
+          position="sticky"
+          top="0"
+          zIndex="1000"
+        >
+          {/* Logo */}
+          <Flex align="center">
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              boxSize="40px"
+              mr="3"
+              borderRadius="full"
+            />
+            <Heading as="h1" size="md">
+              InterviewPrep.AI
+            </Heading>
+          </Flex>
 
           <Spacer />
 
-          {/* Navigation */}
-          <HStack spacing={6}>
-            <Link as={RouterLink} to="/interview" fontWeight="semibold">
+          {/* Navigation Links */}
+          <Flex gap="5">
+            <Link as={RouterLink} to="/interview">
               Interview
             </Link>
-            <Link as={RouterLink} to="/feedback" fontWeight="semibold">
+            <Link as={RouterLink} to="/feedback">
               Feedback
             </Link>
-            <Link as={RouterLink} to="/ai-interview" fontWeight="semibold">
+            <Link as={RouterLink} to="/ai-interview">
               AI Interview
             </Link>
+          </Flex>
 
-            <IconButton
-              icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-              onClick={toggleColorMode}
-              variant="ghost"
-              aria-label="Toggle Theme"
-            />
-          </HStack>
+          {/* Dark Mode Toggle */}
+          <IconButton
+            ml={4}
+            aria-label="Toggle Dark Mode"
+            icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+            onClick={toggleColorMode}
+          />
         </Flex>
-      </Box>
 
-      <Box p={6}>
-        <Outlet />
-      </Box>
+        {/* Render Nested Routes */}
+        <Box p={8}>
+          <Outlet />
+        </Box>
+      </MotionBox>
     </>
   );
 };
