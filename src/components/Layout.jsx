@@ -43,13 +43,8 @@ const Layout = () => {
         >
           {/* Logo */}
           <Flex align="center">
-            <Image
-              src="/logo.png"
-              alt="Logo"
-              boxSize="40px"
-              mr="3"
-              borderRadius="full"
-            />
+            <Image src="/logo.png" alt="InterviewPrep.AI" boxSize="40px" />
+
             <Heading as="h1" size="md">
               InterviewPrep.AI
             </Heading>
