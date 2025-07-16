@@ -1,86 +1,140 @@
 import {
   Box,
   Flex,
-  Heading,
   IconButton,
-  Spacer,
+  Link,
   useColorMode,
+  useDisclosure,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  VStack,
   useColorModeValue,
   Image,
-  Link,
 } from "@chakra-ui/react";
 import { Outlet, Link as RouterLink } from "react-router-dom";
-import { SunIcon, MoonIcon } from "@chakra-ui/icons";
+import { SunIcon, MoonIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { motion } from "framer-motion";
 
 const MotionBox = motion(Box);
 
-const Layout = () => {
+function Layout() {
   const { colorMode, toggleColorMode } = useColorMode();
-  const bg = useColorModeValue("gray.100", "gray.900");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const bgGradient = useColorModeValue(
+    "linear(to-r, purple.100, blue.100)",
+    "linear(to-r, gray.800, gray.900)"
+  );
+
+  const linkColor = useColorModeValue("gray.800", "white");
+  const hoverColor = useColorModeValue("purple.600", "purple.300");
 
   return (
     <>
+      {/* Navbar */}
       <MotionBox
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        bg={bg}
-        minH="100vh"
+        as="header"
+        w="100%"
+        bgGradient={bgGradient}
+        px={4}
+        py={3}
+        position="sticky"
+        top={0}
+        zIndex={1000}
+        boxShadow="sm"
+        initial={{ y: -80 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.4 }}
       >
-        <Flex
-          as="nav"
-          align="center"
-          justify="space-between"
-          wrap="wrap"
-          padding="1.5rem"
-          bg={useColorModeValue("white", "gray.800")}
-          color={useColorModeValue("gray.800", "white")}
-          boxShadow="md"
-          position="sticky"
-          top="0"
-          zIndex="1000"
-        >
+        <Flex align="center" justify="space-between" maxW="1200px" mx="auto">
           {/* Logo */}
-          <Flex align="center">
-            <Image src="/logo.png" alt="InterviewPrep.AI" boxSize="40px" />
+          <Link as={RouterLink} to="/">
+            <Image
+              src="/logo.png" // Place logo.png in public folder
+              alt="Logo"
+              h="40px"
+            />
+          </Link>
 
-            <Heading as="h1" size="md">
-              InterviewPrep.AI
-            </Heading>
-          </Flex>
-
-          <Spacer />
-
-          {/* Navigation Links */}
-          <Flex gap="5">
-            <Link as={RouterLink} to="/interview">
+          {/* Desktop Links */}
+          <Flex
+            align="center"
+            display={{ base: "none", md: "flex" }}
+            gap={6}
+            fontWeight="medium"
+          >
+            <Link
+              as={RouterLink}
+              to="/interview"
+              color={linkColor}
+              _hover={{ color: hoverColor }}
+            >
               Interview
             </Link>
-            <Link as={RouterLink} to="/feedback">
-              Feedback
-            </Link>
-            <Link as={RouterLink} to="/ai-interview">
+            <Link
+              as={RouterLink}
+              to="/ai-interview"
+              color={linkColor}
+              _hover={{ color: hoverColor }}
+            >
               AI Interview
+            </Link>
+            <Link
+              as={RouterLink}
+              to="/feedback"
+              color={linkColor}
+              _hover={{ color: hoverColor }}
+            >
+              Feedback
             </Link>
           </Flex>
 
-          {/* Dark Mode Toggle */}
-          <IconButton
-            ml={4}
-            aria-label="Toggle Dark Mode"
-            icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-            onClick={toggleColorMode}
-          />
+          {/* Toggle + Hamburger */}
+          <Flex gap={2}>
+            <IconButton
+              icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+              onClick={toggleColorMode}
+              variant="ghost"
+              aria-label="Toggle color mode"
+            />
+            <IconButton
+              icon={<HamburgerIcon />}
+              onClick={onOpen}
+              variant="ghost"
+              aria-label="Menu"
+              display={{ base: "inline-flex", md: "none" }}
+            />
+          </Flex>
         </Flex>
-
-        {/* Render Nested Routes */}
-        <Box p={8}>
-          <Outlet />
-        </Box>
       </MotionBox>
+
+      {/* Drawer for mobile nav */}
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <VStack spacing={6} mt={12} align="start" px={6}>
+            <Link as={RouterLink} to="/interview" onClick={onClose}>
+              Interview
+            </Link>
+            <Link as={RouterLink} to="/ai-interview" onClick={onClose}>
+              AI Interview
+            </Link>
+            <Link as={RouterLink} to="/feedback" onClick={onClose}>
+              Feedback
+            </Link>
+          </VStack>
+        </DrawerContent>
+      </Drawer>
+
+      {/* Main content below navbar */}
+      <Box px={4} py={6} maxW="1200px" mx="auto">
+        <Outlet />
+      </Box>
     </>
   );
-};
+}
 
 export default Layout;
