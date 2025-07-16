@@ -2,7 +2,7 @@
 import { Routes, Route } from "react-router-dom";
 import Interview from "./pages/Interview";
 import Feedback from "./pages/Feedback";
-import AIInterview from "./pages/AIInterview";
+//import AIInterview from "./pages/AIInterview";
 import Layout from "./components/Layout";
 
 function App() {
@@ -12,8 +12,7 @@ function App() {
         <Route path="/" element={<Interview />} />
         <Route path="/interview" element={<Interview />} />
         <Route path="/feedback" element={<Feedback />} />
-        <Route path="/ai-interview" element={<AIInterview />} />
-      </Route>
+        </Route>
     </Routes>
   );
 }
