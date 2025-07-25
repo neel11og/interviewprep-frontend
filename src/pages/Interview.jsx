@@ -8,8 +8,10 @@ import {
   Spinner,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { animatedBackgroundStyle } from "../styles/animatedBackground";
 import { useEffect, useState } from "react";
 import AnswerBox from "../components/AnswerBox";
+import axios from "axios";
 
 const Interview = () => {
   const [category, setCategory] = useState("Data Structures");
@@ -59,13 +61,20 @@ const Interview = () => {
   }, [category]);
 
   return (
-    <Box
-      p={{ base: 4, md: 8 }}
-      bg={useColorModeValue("gray.100", "gray.800")}
-      minH="80vh"
-    >
-      <VStack spacing={6} align="stretch" maxW="3xl" mx="auto">
-        <Heading size="lg" color={useColorModeValue("gray.700", "gray.100")}>
+    
+      <Box
+         
+         minH="100vh"
+         display="flex"
+         justifyContent="center"
+         alignItems="center"
+         px={4}
+         style={animatedBackgroundStyle}
+          >
+
+
+      <VStack spacing={6} align="center" maxW="3xl" mx="auto">
+        <Heading size="lg" color={useColorModeValue(("gray.100", "#1A202C"))}>
           🎯 Interview Practice
         </Heading>
 
@@ -87,7 +96,7 @@ const Interview = () => {
         ) : (
           <Box
             p={6}
-            rounded="md"
+            rounded="lg"
             bg={useColorModeValue("white", "gray.700")}
             shadow="md"
             border="1px solid"
@@ -101,7 +110,8 @@ const Interview = () => {
 
         <AnswerBox />
       </VStack>
-    </Box>
+     </Box>
+    
   );
 };
 

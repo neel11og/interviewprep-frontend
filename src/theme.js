@@ -5,6 +5,23 @@ const config = {
   useSystemColorMode: false,
 };
 
-const theme = extendTheme({ config });
-
+const theme = extendTheme({
+  components: {
+    Button: {
+      baseStyle: {
+        borderRadius: "xl",
+      },
+    },
+    Textarea: {
+      baseStyle: {
+        borderRadius: "xl",
+      },
+    },
+    Select: {
+      baseStyle: {
+        borderRadius: "xl",
+      },
+    },
+  },
+});
 export default theme;

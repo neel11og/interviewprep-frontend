@@ -13,9 +13,11 @@ import {
   useColorModeValue,
   Image,
 } from "@chakra-ui/react";
+import { animatedBackgroundStyle } from "../styles/animatedBackground";
 import { Outlet, Link as RouterLink } from "react-router-dom";
 import { SunIcon, MoonIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { motion } from "framer-motion";
+import "../styles/AnimatedBackground.css"; // ✅ Import animated background styles
 
 const MotionBox = motion(Box);
 
@@ -23,21 +25,19 @@ function Layout() {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const bgGradient = useColorModeValue(
-    "linear(to-r, purple.100, blue.100)",
-    "linear(to-r, gray.800, gray.900)"
-  );
+  const bgGradient = animatedBackgroundStyle;
+
 
   const linkColor = useColorModeValue("gray.800", "white");
   const hoverColor = useColorModeValue("purple.600", "purple.300");
 
   return (
-    <>
+    <Box className="animated-background" minH="100vh">
       {/* Navbar */}
       <MotionBox
         as="header"
         w="100%"
-        bgGradient={bgGradient}
+        {...bgGradient}
         px={4}
         py={3}
         position="sticky"
@@ -52,13 +52,13 @@ function Layout() {
           {/* Logo */}
           <Link as={RouterLink} to="/">
             <Image
-              src="/logo.png" // Place logo.png in public folder
+              src="/logo.png" // Make sure logo.png is in the public folder
               alt="Logo"
               h="40px"
             />
           </Link>
 
-          {/* Desktop Links */}
+          {/* Desktop Navigation Links */}
           <Flex
             align="center"
             display={{ base: "none", md: "flex" }}
@@ -91,7 +91,7 @@ function Layout() {
             </Link>
           </Flex>
 
-          {/* Toggle + Hamburger */}
+          {/* Toggle Color Mode + Mobile Menu Icon */}
           <Flex gap={2}>
             <IconButton
               icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
@@ -110,7 +110,7 @@ function Layout() {
         </Flex>
       </MotionBox>
 
-      {/* Drawer for mobile nav */}
+      {/* Mobile Drawer Navigation */}
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
@@ -129,11 +129,11 @@ function Layout() {
         </DrawerContent>
       </Drawer>
 
-      {/* Main content below navbar */}
+      {/* Page Content */}
       <Box px={4} py={6} maxW="1200px" mx="auto">
         <Outlet />
       </Box>
-    </>
+    </Box>
   );
 }
 

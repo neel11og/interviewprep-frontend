@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Heading, Button, VStack, SimpleGrid, useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { animatedBackgroundStyle } from "../styles/animatedBackground";
 
 const categories = [
   "Data Structures & Algorithms",
@@ -31,7 +32,7 @@ export default function CategorySelection() {
   };
 
   return (
-    <Box minH="100vh" bg="gray.50" p={10}>
+    <Box {...animatedBackgroundStyle} minH="100vh" px={4} py={6}rounded="xl" borderRadius="xl">
       <VStack spacing={8}>
         <Heading color="purple.600" textAlign="center">
           🚀 Choose Your Interview Category
