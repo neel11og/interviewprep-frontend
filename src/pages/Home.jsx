@@ -58,10 +58,10 @@ const Home = () => {
   return (
     <Box position="relative" minH="100vh" overflow="hidden">
       <Box
-        borderRadius="xl"
+        borderRadius="2xl"
         position="relative"
         bg={useColorModeValue("rgba(255, 255, 255, 0.2)","rgba(0, 0, 0, 0.5)")}
-        boxShadow="lg"
+        boxShadow="xl"
         px={[4, 8]}
         py={[8, 16]}
         minH="100vh"
@@ -126,7 +126,7 @@ const Home = () => {
       </Box>
 
       {/* Sign-in Button */}
-      <Box position="fixed" bottom="30px" right="30px">
+      <Box position="fixed" bottom="30px" right="30px" zIndex={2}>
         <Button
           onClick={onOpen}
           borderRadius="full"
@@ -145,12 +145,20 @@ const Home = () => {
       {/* Modal */}
       <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
-        <ModalContent bg={bg} color={color} borderRadius="2xl" boxShadow="xl">
+        <ModalContent 
+        borderRadius="2xl"
+        position="relative"
+        bg={useColorModeValue("rgba(255, 255, 255, 0.2)","rgba(0, 0, 0, 0.5)")}
+        boxShadow="xl"
+        px={[4, 8]}
+        py={[4, 16]}
+        minH="100vh"
+      >
           <ModalHeader>Welcome Back</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <VStack spacing={4}>
-              <Input placeholder="Email" variant="filled" />
+              <Input placeholder="Email" variant="filled" type="email"/>
               <Input placeholder="Password" type="password" variant="filled" />
               <Button colorScheme="teal" w="100%" borderRadius="full">
                 Sign In with Credentials
