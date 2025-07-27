@@ -61,7 +61,6 @@ const Interview = () => {
   }, [category]);
 
   return (
-    
       <Box
          
          minH="100vh"
@@ -71,10 +70,18 @@ const Interview = () => {
          px={4}
          style={animatedBackgroundStyle}
           >
-
-
+      <Box
+        borderRadius="xl"
+        position="relative"
+        bg={useColorModeValue("rgba(255, 255, 255, 0.2)","rgba(0, 0, 0, 0.5)")}
+        boxShadow="lg"
+        px={[4, 8]}
+        py={[8, 16]}
+        minH="100vh"
+      >
+        
       <VStack spacing={6} align="center" maxW="3xl" mx="auto">
-        <Heading size="lg" color={useColorModeValue(("gray.100", "#1A202C"))}>
+        <Heading size="lg" color={useColorModeValue(("#dee9ffff", "#000a17ff"))}>
           🎯 Interview Practice
         </Heading>
 
@@ -110,6 +117,7 @@ const Interview = () => {
 
         <AnswerBox />
       </VStack>
+      </Box>
      </Box>
     
   );

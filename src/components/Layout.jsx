@@ -1,140 +1,192 @@
+import React from 'react';
 import {
   Box,
   Flex,
+  HStack,
   IconButton,
-  Link,
-  useColorMode,
   useDisclosure,
+  useColorMode,
+  useColorModeValue,
+  VStack,
+  Text,
   Drawer,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  VStack,
-  useColorModeValue,
+  DrawerHeader,
+  DrawerBody,
+  Button,
+  Tooltip,
   Image,
-} from "@chakra-ui/react";
-import { animatedBackgroundStyle } from "../styles/animatedBackground";
-import { Outlet, Link as RouterLink } from "react-router-dom";
-import { SunIcon, MoonIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { motion } from "framer-motion";
-import "../styles/AnimatedBackground.css"; // ✅ Import animated background styles
+} from '@chakra-ui/react';
+import { HamburgerIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { Link, Outlet } from 'react-router-dom';
 
-const MotionBox = motion(Box);
+import logoLight from '../assets/logoLight.png';
+import logoDark from '../assets/logoDark.png';
+import backgroundVideo from '../assets/ai-video.mp4';
 
-function Layout() {
-  const { colorMode, toggleColorMode } = useColorMode();
+const Layout = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { colorMode, toggleColorMode } = useColorMode();
 
-  const bgGradient = animatedBackgroundStyle;
+  const bgColor = useColorModeValue('rgba(255, 255, 255, 0.2)', 'rgba(26, 32, 44, 0.2)');
+  const textColor = useColorModeValue('gray.800', 'gray.200');
+  const navHoverBg = useColorModeValue('gray.100', 'gray.700');
+  const logo = useColorModeValue(logoLight, logoDark);
 
-
-  const linkColor = useColorModeValue("gray.800", "white");
-  const hoverColor = useColorModeValue("purple.600", "purple.300");
-
+  const navItems = [
+    { name: 'Home', to: '/' },
+    { name: 'Interview', to: '/interview' },
+    { name: 'AI Interview', to: '/ai-interview' },
+    { name: 'Feedback', to: '/feedback' },
+  ];
+      const geminiStyle = {
+        fontFamily: "'Poppins', sans-serif",
+        fontWeight: '500', // Medium weight, very similar to the image
+        fontSize: '21px', // Adjust size as needed
+        color: '#dee9ffff', // A nice light gray for dark backgrounds
+        letterSpacing: '-1px', // Slightly tighter letter spacing for a clean look
+      };
+      const geminiStyleLightBg = {
+        fontFamily: "'Poppins', sans-serif",
+        fontWeight: '500',
+        fontSize: '21px',
+        color: '#000a17ff', // A dark gray for light backgrounds
+        letterSpacing: '-1px',
+      };
   return (
-    <Box className="animated-background" minH="100vh">
-      {/* Navbar */}
-      <MotionBox
-        as="header"
-        w="100%"
-        {...bgGradient}
-        px={4}
-        py={3}
-        position="sticky"
+    <Box position="relative" minH="100vh" overflow="hidden">
+      {/* Video Background */}
+      <Box
+        as="video"
+        autoPlay
+        loop
+        muted
+        playsInline
+        position="fixed"
         top={0}
-        zIndex={1000}
-        boxShadow="sm"
-        initial={{ y: -80 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.4 }}
+        left={0}
+        width="100%"
+        height="100%"
+        objectFit="cover"
+        zIndex={-1}
       >
-        <Flex align="center" justify="space-between" maxW="1200px" mx="auto">
-          {/* Logo */}
-          <Link as={RouterLink} to="/">
-            <Image
-              src="/logo.png" // Make sure logo.png is in the public folder
-              alt="Logo"
-              h="40px"
-            />
-          </Link>
+        <source src={backgroundVideo} type="video/mp4" />
+      </Box>
 
-          {/* Desktop Navigation Links */}
-          <Flex
-            align="center"
-            display={{ base: "none", md: "flex" }}
-            gap={6}
-            fontWeight="medium"
-          >
-            <Link
-              as={RouterLink}
-              to="/interview"
-              color={linkColor}
-              _hover={{ color: hoverColor }}
-            >
-              Interview
-            </Link>
-            <Link
-              as={RouterLink}
-              to="/ai-interview"
-              color={linkColor}
-              _hover={{ color: hoverColor }}
-            >
-              AI Interview
-            </Link>
-            <Link
-              as={RouterLink}
-              to="/feedback"
-              color={linkColor}
-              _hover={{ color: hoverColor }}
-            >
-              Feedback
-            </Link>
-          </Flex>
+      {/* Navbar */}
+      <Flex
+        as="nav"
+        position="sticky"
+        top="0"
+        zIndex="100"
+        bg={bgColor}
+        backdropFilter="blur(5px)"
+        boxShadow="md"
+        p={3}
+        px={{ base: 4, md: 8 }}
+        align="center"
+        justify="space-between"
+        borderRadius="0 0 1.5rem 1.5rem"
+      >
+        <HStack spacing={1} align="center" cursor="pointer"
+              transition="all 0.3s"
+              _hover={{ transform: 'scale(1.05)' }}>
+          <Image src={logo} alt="Logo" boxSize="40px" borderRadius="xl" />
+          <Tooltip >
+            <Text
+              fontWeight="bold"
+              fontSize=""
+              color={textColor} 
+              style={colorMode === 'light' ? geminiStyleLightBg : geminiStyle}
+              transition="color 0.3s">
+              InterviewPrep.AI
+            </Text>
+          </Tooltip>
+        </HStack>
 
-          {/* Toggle Color Mode + Mobile Menu Icon */}
-          <Flex gap={2}>
-            <IconButton
-              icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-              onClick={toggleColorMode}
+        {/* Desktop Links */}
+        <HStack spacing={4} display={{ base: 'none', md: 'flex' }}>
+          {navItems.map((item) => (
+            <Button
+              key={item.name}
+              as={Link}
+              to={item.to}
               variant="ghost"
-              aria-label="Toggle color mode"
-            />
-            <IconButton
-              icon={<HamburgerIcon />}
-              onClick={onOpen}
-              variant="ghost"
-              aria-label="Menu"
-              display={{ base: "inline-flex", md: "none" }}
-            />
-          </Flex>
-        </Flex>
-      </MotionBox>
+              borderRadius="full"
+              fontWeight="medium"
+              color={textColor}
+              _hover={{ bg: navHoverBg, transform: 'scale(1.05)' }}
+              transition="all 0.2s ease-in-out"
+            >
+              {item.name}
+            </Button>
+          ))}
+          <IconButton
+            aria-label="Toggle color mode"
+            icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+            onClick={toggleColorMode}
+            variant="ghost"
+            borderRadius="full"
+            _hover={{ bg: navHoverBg, transform: 'rotate(20deg)' }}
+            transition="all 0.3s"
+          />
+        </HStack>
 
-      {/* Mobile Drawer Navigation */}
+        {/* Mobile Menu */}
+        <IconButton
+          display={{ base: 'flex', md: 'none' }}
+          icon={<HamburgerIcon />}
+          onClick={onOpen}
+          variant="ghost"
+          borderRadius="xl"
+          aria-label="Open menu"
+        />
+      </Flex>
+
+      {/* Mobile Drawer */}
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent bg={bgColor} backdropFilter="blur(5px)">
           <DrawerCloseButton />
-          <VStack spacing={6} mt={12} align="start" px={6}>
-            <Link as={RouterLink} to="/interview" onClick={onClose}>
-              Interview
-            </Link>
-            <Link as={RouterLink} to="/ai-interview" onClick={onClose}>
-              AI Interview
-            </Link>
-            <Link as={RouterLink} to="/feedback" onClick={onClose}>
-              Feedback
-            </Link>
-          </VStack>
+          <DrawerHeader>Menu</DrawerHeader>
+          <DrawerBody>
+            <VStack spacing={4} align="start">
+              {navItems.map((item) => (
+                <Button
+                  key={item.name}
+                  as={Link}
+                  to={item.to}
+                  variant="ghost"
+                  onClick={onClose}
+                  fontWeight="semibold"
+                  borderRadius="xl"
+                  color={textColor}
+                  _hover={{ bg: navHoverBg }}
+                >
+                  {item.name}
+                </Button>
+              ))}
+              <IconButton
+                aria-label="Toggle color mode"
+                icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                onClick={toggleColorMode}
+                variant="ghost"
+                borderRadius="xl"
+                _hover={{ bg: navHoverBg }}
+              />
+            </VStack>
+          </DrawerBody>
         </DrawerContent>
       </Drawer>
 
       {/* Page Content */}
-      <Box px={4} py={6} maxW="1200px" mx="auto">
+      <Box p={{ base: 4, md: 8 }}>
         <Outlet />
       </Box>
     </Box>
   );
-}
+};
 
 export default Layout;
