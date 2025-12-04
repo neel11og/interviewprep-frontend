@@ -1,65 +1,77 @@
-// src/theme.js
 import { extendTheme } from "@chakra-ui/react";
-import { mode } from "@chakra-ui/theme-tools";
 
 const theme = extendTheme({
-  styles: {
-    global: (props) => ({
-      body: {
-        bg: mode("#F8F9FA", "#121212")(props), // Light / Dark background
-        color: mode("#1A1A1A", "#EDEDED")(props), // Text colors
-        transition: "all 0.3s ease-in-out",
-      },
-    }),
+  config: {
+    initialColorMode: "dark",
+    useSystemColorMode: false,
   },
-  fonts: {
-    heading: "Poppins, sans-serif",
-    body: "Poppins, sans-serif",
-  },
+
   colors: {
     brand: {
-      50: "#f3e8ff",
-      100: "#e9d5ff",
-      200: "#d8b4fe",
-      300: "#c084fc",
-      400: "#a855f7", // Main accent purple
-      500: "#9333ea",
-      600: "#7e22ce",
-      700: "#6b21a8",
-      800: "#581c87",
-      900: "#3b0764",
+      primary: "#a855f7", 
+      secondary: "#7e22ce",
+    },
+    background: "#0a0514", 
+  },
+
+  fonts: {
+    heading: "'Orbitron', sans-serif",
+    body: "'Roboto', sans-serif",
+  },
+
+  styles: {
+    global: {
+      "html, body": {
+        bg: "background",
+        color: "whiteAlpha.800",
+        margin: 0,
+        padding: 0,
+        height: "100%",
+      },
+      "#root": {
+        height: "100%",
+      },
     },
   },
+
   components: {
     Button: {
-      baseStyle: {
-        borderRadius: "9999px", // Fully rounded
-        fontWeight: "semibold",
-        transition: "all 0.3s ease-in-out",
-      },
       variants: {
-        solid: (props) => ({
-          bg: mode("brand.400", "brand.600")(props),
-          color: "white",
-          _hover: {
-            bg: mode("brand.500", "brand.700")(props),
-            transform: "scale(1.05)",
-            boxShadow: "lg",
-          },
-          _active: {
-            transform: "scale(0.97)",
-          },
-        }),
-        outline: (props) => ({
+        glow: {
+          bg: "transparent",
           border: "2px solid",
-          borderColor: mode("brand.400", "brand.600")(props),
-          color: mode("brand.600", "brand.400")(props),
+          borderColor: "brand.primary",
+          color: "brand.primary",
+          fontWeight: "bold",
+          textShadow: "0 0 5px #a855f7",
+          transition: "all 0.3s ease-in-out",
           _hover: {
-            bg: mode("brand.50", "brand.800")(props),
+            boxShadow: "0 0 20px 5px rgba(168, 85, 247, 0.5)",
+            bg: "rgba(168, 85, 247, 0.1)",
             transform: "scale(1.05)",
-            boxShadow: "md",
           },
-        }),
+          _active: { transform: "scale(0.95)" },
+        },
+      },
+    },
+    Box: {
+      variants: {
+        glass: {
+          bg: "rgba(0, 0, 0, 0.4)",
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
+          borderRadius: "2xl",
+          boxShadow: "xl",
+        },
+      },
+    },
+    ModalContent: {
+      baseStyle: {
+        bg: "rgba(10, 5, 20, 0.6)",
+        backdropFilter: "blur(15px)",
+        border: "1px solid",
+        borderColor: "brand.primary",
+        boxShadow: "0 0 30px 10px rgba(168, 85, 247, 0.2)",
       },
     },
   },

@@ -12,7 +12,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@react-three/drei": "^9.94.0",
-    "@react-three/fiber": "^8.14.0",
+    "@react-three/fiber": "^8.18.0",
     "axios": "^1.10.0",
     "framer-motion": "^12.23.12",
     "react": "^18.2.0",

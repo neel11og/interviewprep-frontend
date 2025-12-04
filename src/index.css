@@ -1,2 +1,15 @@
-/* Add this to your main CSS file */
+/* Fonts fallback (primary fonts handled in index.html) */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap');
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background-color: transparent;
+  font-family: 'Roboto', sans-serif;
+  overflow-x: hidden; /* prevents horizontal scrollbar */
+}

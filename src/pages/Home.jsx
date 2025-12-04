@@ -1,199 +1,183 @@
-import React from "react";
+// src/pages/Home.jsx
+import React, { useState } from "react";
 import {
   Box,
   Heading,
   Text,
   Button,
-  useColorModeValue,
   VStack,
-  SimpleGrid,
-  useDisclosure,
+  HStack,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Input,
-  Divider,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { FaGoogle, FaFacebookF } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "../contexts/AuthContext";
+import Starfield from "../components/Starfield";
+import AuthModal from "../components/AuthModal";
 
-// --- FIXED IMAGE IMPORTS ---
-// This path correctly goes up one level from 'src/pages' to 'src',
-// and then into the 'assets' folder.
-import card1Image from "/card1.png";
-import card2Image from '/card2.png';
-import card3Image from '/card3.png';
-
-
-
-const cardData = [
-  {
-    id: 1,
-    background: card1Image ,
-    title: "Practice Interviews",
-    description: "Prepare with precision using questions derived from your own experience. Our AI platform analyzes your resume to generate a bespoke set of technical, behavioral, and situational inquiries, ensuring your practice is 100% relevant.",
-  },
-  {
-    id: 2,
-    background: card2Image,
-    title: "Real-time AI Interviewer",
-    description: "Master your interview presence with on-demand AI simulations. Practice your pacing, articulation, and responses in a realistic environment designed to mimic a true-to-life hiring manager interaction.",
-  },
-  {
-    id: 3,
-    background: card3Image,
-    title: "Feedback & Scoring",
-    description: "The key to improvement is measurable feedback. Our system analyzes each response to provide a quantitative score and strategic advice, turning every practice session into a targeted lesson for growth.",
-  },
-];
-
-const Home = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const color = useColorModeValue("gray.800", "whiteAlpha.900");
-  const bg = useColorModeValue("white", "gray.800");
-
+const FeatureCard = ({ title, description, onOpen }) => {
   return (
-    <Box position="relative" minH="100vh" overflow="hidden">
+    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={onOpen}>
       <Box
-        borderRadius="2xl"
-        position="relative"
-        bg={useColorModeValue("rgba(255, 255, 255, 0.2)","rgba(0, 0, 0, 0.5)")}
-        boxShadow="xl"
-        px={[4, 8]}
-        py={[8, 16]}
-        minH="100vh"
+        bg="rgba(255,255,255,0.05)"
+        p={6}
+        borderRadius="md"
+        boxShadow="lg"
+        maxW="300px"
+        cursor="pointer"
+        border="1px solid rgba(255,255,255,0.1)"
       >
-      <VStack spacing={8} px={6} pt={32} textAlign="center">
-        
-        <Heading fontSize="4xl" color={color}>
-          Welcome to the Future of Interview Preparation
+        <Heading size="md" mb={4} color="teal.200">
+          {title}
         </Heading>
-        <Text fontSize="lg" color={color} maxW="600px">
-          InterviewPrep.AI is your smart assistant for mastering job interviews. Upload your resume,
-          receive custom questions, and experience real-time AI interviews with meaningful feedback.
-        </Text>
-
-        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mt={10} w="100%" maxW="1200px">
-          {cardData.map((card, index) => (
-            <Box
-              key={index}
-              p={6}
-              bgImage={`url(${card.background})`}
-              bgSize="cover"
-              bgPosition="center"
-              color="white"
-              borderRadius="2xl"
-              boxShadow="lg"
-              transition="all 0.3s ease"
-              minHeight="400px"
-              display="flex"
-              flexDirection="column"
-              justifyContent="flex-end"
-              position="relative"
-              _before={{
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                bg: 'linear-gradient(to top, rgba(0,0,0,0.9) 20%, transparent 60%)',
-                borderRadius: '2xl',
-                zIndex: 1,
-              }}
-              _hover={{
-                transform: "scale(1.05)",
-                boxShadow: "2xl",
-              }}
-            >
-              <Box position="relative" zIndex={2}>
-                <Heading size="md" mb={3}>
-                  {card.title}
-                </Heading>
-                <Text fontSize="md">{card.description}</Text>
-              </Box>
-            </Box>
-          ))}
-        </SimpleGrid>
-
-        <Text fontSize="md" color={color} maxW="800px" mt={8}>
-          Start building confidence and preparing smartly with InterviewPrep.AI — the platform that adapts to your career goals and resume.
-        </Text>
-      </VStack>
+        <Text>{description}</Text>
       </Box>
-
-      {/* Sign-in Button */}
-      <Box position="fixed" bottom="30px" right="30px" zIndex={2}>
-        <Button
-          onClick={onOpen}
-          borderRadius="full"
-          bg="teal.400"
-          color="white"
-          px={6}
-          py={4}
-          size="lg"
-          fontWeight="bold"
-          _hover={{ bg: "teal.500", transform: "scale(1.05)" }}
-        >
-          Sign In / Log In
-        </Button>
-      </Box>
-
-      {/* Modal */}
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
-        <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
-        <ModalContent 
-        borderRadius="2xl"
-        position="relative"
-        bg={useColorModeValue("rgba(255, 255, 255, 0.2)","rgba(0, 0, 0, 0.5)")}
-        boxShadow="xl"
-        px={[4, 8]}
-        py={[4, 16]}
-        minH="100vh"
-      >
-          <ModalHeader>Welcome Back</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <VStack spacing={4}>
-              <Input placeholder="Email" variant="filled" type="email"/>
-              <Input placeholder="Password" type="password" variant="filled" />
-              <Button colorScheme="teal" w="100%" borderRadius="full">
-                Sign In with Credentials
-              </Button>
-              <Divider />
-              <Button
-                leftIcon={<FaGoogle />}
-                w="100%"
-                borderRadius="full"
-                variant="outline"
-                _hover={{ bg: "gray.100", color: "black" }}
-              >
-                Continue with Google
-              </Button>
-              <Button
-                leftIcon={<FaFacebookF />}
-                w="100%"
-                borderRadius="full"
-                variant="outline"
-                _hover={{ bg: "blue.100", color: "black" }}
-              >
-                Continue with Facebook / Meta
-              </Button>
-            </VStack>
-            
-          </ModalBody>
-          <ModalFooter>
-            <Button onClick={onClose} borderRadius="full">
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </Box>
+    </motion.div>
   );
 };
 
-export default Home;
+export default function Home() {
+  const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isAuthenticated } = useAuth();
+  const [activeFeature, setActiveFeature] = useState(null);
+  const [isAuthOpen, setAuthOpen] = useState(false);
+
+  const features = [
+    {
+      title: "✨ AI-Powered Interviews",
+      description: "Face a smart AI interviewer that adapts to your answers.",
+      details:
+        "Our AI analyzes your responses in real-time, asking follow-ups just like a human. Perfect for practicing behavioral, technical, or case interviews!",
+    },
+    {
+      title: "📄 Resume-Based Prep",
+      description: "Get questions tailored to YOUR resume.",
+      details:
+        "Upload your resume, and we’ll generate personalized questions based on your skills, experience, and job goals.",
+    },
+    {
+      title: "🚀 Instant Feedback",
+      description: "Know exactly where to improve.",
+      details:
+        "Get real-time scores on clarity, confidence, and content. We’ll highlight filler words, weak phrases, and even suggest better answers!",
+    },
+  ];
+
+  const handleCardClick = (index) => {
+    setActiveFeature(index);
+    onOpen();
+  };
+
+  return (
+    <Box position="relative" minH="100vh" overflow="hidden">
+      {/* Starfield Background */}
+      <Starfield starCount={1000} speed={0.5} style={{ position: "fixed", zIndex: -1 }} />
+
+      {/* Main Hero */}
+      <VStack
+        minH="70vh"
+        justify="center"
+        align="center"
+        spacing={8}
+        px={4}
+        textAlign="center"
+        zIndex={2}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <Heading size="2xl" bgGradient="linear(to-r, teal.300, blue.500)" bgClip="text">
+            InterviewPrep.AI
+          </Heading>
+        </motion.div>
+
+        <Text fontSize="xl" maxW="600px" opacity={0.9}>
+          Your resume → <b>AI-powered interview coach</b>. Practice. Get feedback.{" "}
+          <b>Get hired.</b>
+        </Text>
+
+        {/* CTA Button → opens AuthModal (Firebase login/signup) */}
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Button
+            onClick={() => isAuthenticated ? navigate("/dashboard") : setAuthOpen(true)}
+            bgGradient="linear(to-r, teal.300, blue.500)"
+            colorScheme="teal"
+            size="lg"
+            px={8}
+            borderRadius="lg"
+          >
+            {isAuthenticated ? "Go to Dashboard" : "Start Free Trial"}
+          </Button>
+
+          <AuthModal isOpen={isAuthOpen} onClose={() => setAuthOpen(false)} />
+        </motion.div>
+      </VStack>
+
+      {/* Feature Cards */}
+      <HStack
+        spacing={8}
+        px={8}
+        py={16}
+        wrap="wrap"
+        justify="center"
+        align="stretch"
+        zIndex={2}
+      >
+        {features.map((feature, index) => (
+          <FeatureCard
+            key={index}
+            title={feature.title}
+            description={feature.description}
+            onOpen={() => handleCardClick(index)}
+          />
+        ))}
+      </HStack>
+
+      {/* Feature Details Modal */}
+      <AnimatePresence>
+        {isOpen && (
+          <Modal isOpen={isOpen} onClose={onClose} isCentered>
+            <ModalOverlay bg="blackAlpha.700" />
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+            >
+              <ModalContent
+                bg="linear-gradient(135deg, #1a202c, #2d3748)"
+                border="1px solid"
+                borderColor="teal.400"
+                borderRadius="xl"
+                p={6}
+              >
+                <ModalHeader fontSize="2xl" color="teal.300">
+                  {features[activeFeature]?.title}
+                </ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <Text mb={6}>{features[activeFeature]?.details}</Text>
+                  <Button
+                    colorScheme="teal"
+                    w="full"
+                    onClick={() => setAuthOpen(true)} // ✅ triggers Auth modal
+                  >
+                    Try It Now
+                  </Button>
+                </ModalBody>
+              </ModalContent>
+            </motion.div>
+          </Modal>
+        )}
+      </AnimatePresence>
+    </Box>
+  );
+}
